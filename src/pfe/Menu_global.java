@@ -13,6 +13,7 @@ import javax.swing.Timer;
 
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -31,6 +32,11 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.border.LineBorder;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.xml.sax.SAXException;
+
 import javax.swing.UIManager;
 import java.awt.Choice;
 import javax.swing.JPopupMenu;
@@ -232,7 +238,7 @@ public class Menu_global {
 								}
 								String result = sb.toString().trim();
 
-								String query = "INSERT INTO RESULTAT  VALUES (?,?,?,?)";
+								String query = "INSERT INTO RESULTAT VALUES (?,?,?,?)";
 								PreparedStatement statement = null;
 
 								try {
@@ -240,7 +246,7 @@ public class Menu_global {
 									statement.setString(1, element);
 									statement.setInt(2, id_max);
 									Date date = new Date();
-									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+									SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 									String formattedDate = sdf.format(date);
 									statement.setString(3, formattedDate);
 									statement.setString(4, result);
@@ -395,13 +401,40 @@ public class Menu_global {
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
-				connexion_interface window = new connexion_interface();
+				connexion_interface window = null;
+				try {
+					window = new connexion_interface();
+				} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				window.frame.setVisible(true);
 			}
 		});
 		mnNewMenu_5.add(mntmNewMenuItem_1);
 
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Lier");
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Creer les tables");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				connection con = new connection();
+				
+				switch (db) {
+				case "Oracle":
+					con.connection(Menu_global.this.user, Menu_global.this.password);
+					
+					con.drop_table();
+					con.create_table_orcl();
+					JOptionPane.showMessageDialog(null, "Create With Success");
+					break;
+				case "MySQL":
+					con.connection2(Menu_global.this.user, Menu_global.this.password,Menu_global.this.database);
+					con.drop_table();
+					con.create_table();
+					JOptionPane.showMessageDialog(null, "Create With Success");
+					break;
+				}
+			}
+		});
 		mnNewMenu_5.add(mntmNewMenuItem_2);
 		frame.getContentPane().setLayout(null);
 

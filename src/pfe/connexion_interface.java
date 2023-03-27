@@ -10,11 +10,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.UIManager;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.xml.sax.SAXException;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -49,15 +56,25 @@ public class connexion_interface {
 
 	/**
 	 * Create the application.
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 * @throws XPathExpressionException 
+	 * @throws FileNotFoundException 
 	 */
-	public connexion_interface() {
+	public connexion_interface() throws FileNotFoundException, XPathExpressionException, ParserConfigurationException, SAXException, IOException {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 * @throws XPathExpressionException 
+	 * @throws FileNotFoundException 
 	 */
-	private void initialize() {
+	private void initialize() throws FileNotFoundException, XPathExpressionException, ParserConfigurationException, SAXException, IOException {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(UIManager.getColor("Button.disabledShadow"));
 		frame.setBounds(100, 100, 682, 467);
@@ -68,11 +85,14 @@ public class connexion_interface {
 		lblNewLabel.setFont(new Font("Arial Black", Font.PLAIN, 13));
 		lblNewLabel.setBounds(390, 65, 195, 30);
 		frame.getContentPane().add(lblNewLabel);
-
+		
+	//	xmllll xml = new xmllll();
+		
 		userField = new JTextField();
 		userField.setBounds(390, 106, 232, 42);
 		frame.getContentPane().add(userField);
 		userField.setColumns(10);
+		//userField.setText(xml.get_element_xml()[0]);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.GRAY);
@@ -107,7 +127,10 @@ public class connexion_interface {
 		connectButton.setFont(new Font("Arial Black", Font.PLAIN, 13));
 		connectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
+				
+				
+				
 				String username = userField.getText();
 				String password = new String(((JPasswordField) passwordField).getPassword());
 				String database = dbNameField.getText();
@@ -137,6 +160,13 @@ public class connexion_interface {
 						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "",
 								username, password);
 						Menu_global menu = new Menu_global(username,password,db,database);
+						try {
+							xmllll.set_element_xml_mysql(username, password, database);
+						} catch (XPathExpressionException | ParserConfigurationException | SAXException
+								| IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						menu.frame.setVisible(true);
 
 						frame.setVisible(false);
@@ -167,6 +197,9 @@ public class connexion_interface {
 		passwordField.setColumns(10);
 		passwordField.setBounds(390, 200, 232, 42);
 		frame.getContentPane().add(passwordField);
+		//xmllll xml = new xmllll();
+		//passwordField.setText(xml.get_element_xml()[1]);
+	
 
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(390, 240, 209, 2);
@@ -180,18 +213,54 @@ public class connexion_interface {
 			public void actionPerformed(ActionEvent e) {
 				db = (String) comboBox.getSelectedItem();
 				
+				xmllll xml = new xmllll();
+				
 				if (db=="Oracle")
 				{
 					
 					dbNameField.setVisible(false);
 					lblNewLabel_1_1.setVisible(false);
 					separator_2.setVisible(false);
-
+					
+					
+					try {
+						userField.setText(xml.get_element_xml_orcl()[0]);
+					} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						passwordField.setText(xml.get_element_xml_orcl()[1]);
+					} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
 					
 				}else {
 					dbNameField.setVisible(true);
 					lblNewLabel_1_1.setVisible(true);
 					separator_2.setVisible(true);
+					
+					try {
+						userField.setText(xml.get_element_xml_mysql()[0]);
+					} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						passwordField.setText(xml.get_element_xml_mysql()[1]);
+					} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						dbNameField.setText(xml.get_element_xml_mysql()[2]);
+					} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
 				}
 				
 			}

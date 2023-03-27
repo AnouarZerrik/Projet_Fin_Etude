@@ -106,7 +106,8 @@ public class CSVImporter extends JFrame implements ActionListener {
 					  try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             String[] values;
-
+           // importButton.enable(true);
+            statusLabel.setText("Import en cour ....");
             for (int i = 0; (line = reader.readLine()) != null; i++) {
                 values = line.split(";");
                 
@@ -124,7 +125,7 @@ public class CSVImporter extends JFrame implements ActionListener {
 	                	if ( option== 1) {
 	                	    sql = "INSERT INTO LIEN VALUES (?, ?)";
 	                   }else if(option==2) {
-	                	    sql = "INSERT INTO SITE22 VALUES (?, ?)";
+	                	    sql = "INSERT INTO SITE VALUES (?, ?)";
 	                   }
 	                    pstmt = con.connection.prepareStatement(sql);
 	                    pstmt.setString(1, values[0]);

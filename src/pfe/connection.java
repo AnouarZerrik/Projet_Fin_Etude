@@ -18,6 +18,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+import java.io.File;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
 public class connection {
 
 	// -------variables
@@ -438,12 +446,22 @@ public class connection {
 			e.printStackTrace();
 		}
 	}
-
+	static void connection1(String user, String password1) {
+		String jdbcUrl = "jdbc:oracle:thin:@localhost:1521:ORCL";
+		String username = user;
+		String password = password1;
+		try {
+			connection = DriverManager.getConnection(jdbcUrl, username, password);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	static void connection2(String user, String password1,String database) {
 		try{ 
 			   Class.forName("com.mysql.cj.jdbc.Driver");
 			   connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+database+"",user,password1);
-			  // System.out.println("Connect");
+			  System.out.println("Connect");
 			   }catch(Exception e){
 			    System.out.println(e);
 			   } 
@@ -465,39 +483,82 @@ public class connection {
 
 	}
 
-	public static void main(String[] args) {
+	
+	static void create_table()
+	{
+		Statement stmt = null;
+		try {
+		stmt = connection.createStatement();
+		//stmt.addBatch("CREATE TABLE mytable (id NUMBER, name VARCHAR2(50))");
+		//stmt.addBatch("CREATE TABLE mytable1 (id NUMBER, name VARCHAR2(50))");
+		String sql = "CREATE TABLE lien (LIEN1 varchar(255),LIEN2 varchar(255))";
+		String sql1 = "CREATE TABLE site(SITE_NAME varchar(255),IP varchar(255))";
+		String sql2 = "CREATE TABLE resultat (SITE varchar(255),ID_TRAITEMENT int,DATE_INSERT date ,CHEMIN longtext)";
+		//stmt1.executeBatch();
+		stmt.execute(sql);
+		stmt.execute(sql1);
+		stmt.execute(sql2);
+        System.out.println("Database created successfully...");
+     } catch (SQLException e) {
+        System.out.println("Failed to create database.") ;
+		
+     }	
+		
+	}
+	
+	static void create_table_orcl()
+	{
+		Statement stmt = null;
+		try {
+		stmt = connection.createStatement();
+		//stmt.addBatch("CREATE TABLE mytable (id NUMBER, name VARCHAR2(50))");
+		//stmt.addBatch("CREATE TABLE mytable1 (id NUMBER, name VARCHAR2(50))");
+		String sql = "CREATE TABLE lien (LIEN1 varchar(255),LIEN2 varchar(255))";
+		String sql1 = "CREATE TABLE site(SITE_NAME varchar(255),IP varchar(255))";
+		String sql2 = "CREATE TABLE resultat (SITE varchar(255),ID_TRAITEMENT int,DATE_INSERT date ,CHEMIN CLOB)";
+		//stmt1.executeBatch();
+		stmt.execute(sql);
+		stmt.execute(sql1);
+		stmt.execute(sql2);
+        System.out.println("Database created successfully...");
+     } catch (SQLException e) {
+        System.out.println("Failed to create database.") ;
+		
+     }	
+		
+	}
+	
+	static void drop_table()
+	{
+		Statement stmt = null;
+		Statement stmt1 = null;
+		try {
+		stmt = connection.createStatement();
+		stmt1 = connection.createStatement();
+		stmt.addBatch("drop TABLE site ");
+		stmt.addBatch("drop TABLE lien ");
+		stmt.addBatch("drop TABLE resultat ");
+		stmt.executeBatch();
+		//stmt1.executeBatch();
+        System.out.println("Database created successfully...");
+     } catch (SQLException e) {
+        System.out.println("Failed to create database.") ;
+     }	
+	}
+	
+	
+	public static void main(String[] args) throws SQLException {
 
-		//connection("system", "anouarzerrik2003");
-		connection2("root","anoirzerrik2003","data base tp");
-		System.out.println(get_MAX1());
-		// System.out.println(get_MAX());
-
-		// GetALLSitesPaths(GetALLSites());
-		/*
-		 * Scanner scann = new Scanner(System.in);
-		 * System.out.println("enter le site :"); String site_name = scann.next();
-		 * String ip_site = get_ip_site(site_name); String array_of_sites1[] =
-		 * get_SITES(ip_site, site_name);
-		 * 
-		 * for (int i = 0; i < array_of_sites1.length; i++) {
-		 * System.out.println(array_of_sites1[i]); } System.out.println(
-		 * "=================================================================================="
-		 * );
-		 * 
-		 * System.out.println(
-		 * "=================================================================================="
-		 * );
-		 * 
-		 * StringBuilder sb = new StringBuilder(); for (String s :
-		 * STOCKAGE_Principal(array_of_sites1)) { sb.append(s);
-		 * 
-		 * if (s == "]]") { sb.append(" "); } } String result = sb.toString().trim();
-		 * System.out.println(result);
-		 * 
-		 * /* try { convertToExcel(STOCKAGE_LAKHIR(array_of_sites1), "SALINA.xlsx"); }
-		 * catch (IOException e1) { // TODO Auto-generated catch block
-		 * e1.printStackTrace(); }
-		 */
-		//delete_traitement(1);
+	//connection("system", "anouarzerrik2003");
+	connection2("root","anoirzerrik2003","etl");
+	drop_table();
+	create_table();
+	
+	DatabaseMetaData md = connection.getMetaData();
+	ResultSet rs = md.getTables(null, null, "site", null);
+	while (rs.next()) {
+	  System.out.println(rs.getString(3));
+	}
+	
 	}
 }

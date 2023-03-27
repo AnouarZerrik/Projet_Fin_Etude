@@ -11,5 +11,6 @@ module PFE {
 	//requires radiance.substance;
 	requires com.oracle.database.jdbc;
 	requires java.prefs;
+	requires java.xml;
 	
 }
