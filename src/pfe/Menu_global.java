@@ -150,6 +150,7 @@ public class Menu_global {
 
 				result_win win = new result_win(Menu_global.this.user, Menu_global.this.password,Menu_global.this.database,Menu_global.this.db);
 				win.frame.setVisible(true);
+				
 			}
 		});
 		mnNewMenu_3.add(mntmPourUnSite);

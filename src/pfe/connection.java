@@ -550,9 +550,9 @@ public class connection {
 	public static void main(String[] args) throws SQLException {
 
 	//connection("system", "anouarzerrik2003");
-	connection2("root","anoirzerrik2003","etl");
-	drop_table();
-	create_table();
+	//connection2("root","anoirzerrik2003","etl");
+	//drop_table();
+	//create_table();
 	
 	DatabaseMetaData md = connection.getMetaData();
 	ResultSet rs = md.getTables(null, null, "site", null);
