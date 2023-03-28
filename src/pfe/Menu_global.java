@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.border.LineBorder;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
@@ -393,6 +394,11 @@ public class Menu_global {
 		mnNewMenu_3.add(mntmPourTous);
 
 		JMenu mnNewMenu_4 = new JMenu("Tab_bord");
+		mnNewMenu_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		menuBar.add(mnNewMenu_4);
 
 		JMenu mnNewMenu_5 = new JMenu("Config");

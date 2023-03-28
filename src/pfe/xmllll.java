@@ -33,7 +33,7 @@ public class xmllll {
 		String tab[] = new String[3];
 		 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
-        Document document = db.parse(new FileInputStream(new File("C:\\Users\\UTENTE\\eclipse-workspace\\PFE\\src\\pfe\\xml.xml")));// same xml comments as above.
+        Document document = db.parse(new FileInputStream(new File("myFile.xml")));// same xml comments as above.
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -60,7 +60,7 @@ public class xmllll {
 		String tab[] = new String[2];
 		 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
-        Document document = db.parse(new FileInputStream(new File("C:\\Users\\UTENTE\\eclipse-workspace\\PFE\\src\\pfe\\xml.xml")));// same xml comments as above.
+        Document document = db.parse(new FileInputStream(new File("myFile.xml")));// same xml comments as above.
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -90,7 +90,7 @@ public class xmllll {
 	         DocumentBuilder builder = factory.newDocumentBuilder();
 
 	         // Parse the XML file into a Document object
-	         Document doc = builder.parse(new FileInputStream(new File("C:\\Users\\UTENTE\\eclipse-workspace\\PFE\\src\\pfe\\xml.xml")));
+	         Document doc = builder.parse(new FileInputStream(new File("myFile.xml")));
 
 	         // Get the first element in the document
 	         Element firstElement = (Element) doc.getElementsByTagName("element").item(0);
@@ -104,7 +104,7 @@ public class xmllll {
 	         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	         Transformer transformer = transformerFactory.newTransformer();
 	         DOMSource source = new DOMSource(doc);
-	         StreamResult result = new StreamResult(new File("C:\\Users\\UTENTE\\eclipse-workspace\\PFE\\src\\pfe\\xml.xml"));
+	         StreamResult result = new StreamResult(new File("myFile.xml"));
 	         transformer.transform(source, result);
 
 	         // Print a message indicating success
@@ -128,7 +128,7 @@ public class xmllll {
 	         DocumentBuilder builder = factory.newDocumentBuilder();
 
 	         // Parse the XML file into a Document object
-	         Document doc = builder.parse(new FileInputStream(new File("C:\\Users\\UTENTE\\eclipse-workspace\\PFE\\src\\pfe\\xml.xml")));
+	         Document doc = builder.parse(new FileInputStream(new File("myFile.xml")));
 
 	         // Get the first element in the document
 	         Element firstElement = (Element) doc.getElementsByTagName("element").item(0);
@@ -141,7 +141,7 @@ public class xmllll {
 	         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	         Transformer transformer = transformerFactory.newTransformer();
 	         DOMSource source = new DOMSource(doc);
-	         StreamResult result = new StreamResult(new File("C:\\Users\\UTENTE\\eclipse-workspace\\PFE\\src\\pfe\\xml.xml"));
+	         StreamResult result = new StreamResult(new File("myFile.xml"));
 	         transformer.transform(source, result);
 
 	         // Print a message indicating success
@@ -203,7 +203,7 @@ public class xmllll {
 		
 		//set_element_xml();
 		
-		for ( String n : get_element_xml_mysql()) {
+		for ( String n : get_element_xml_orcl()) {
 			System.out.println(n);
 			
 		}
