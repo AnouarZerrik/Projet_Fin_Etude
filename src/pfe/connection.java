@@ -535,30 +535,69 @@ public class connection {
 		try {
 		stmt = connection.createStatement();
 		stmt1 = connection.createStatement();
-		stmt.addBatch("drop TABLE site ");
-		stmt.addBatch("drop TABLE lien ");
-		stmt.addBatch("drop TABLE resultat ");
+		stmt.addBatch("drop TABLE SITE ");
+		stmt.addBatch("drop TABLE LIEN ");
+		stmt.addBatch("drop TABLE RESULTAT ");
 		stmt.executeBatch();
 		//stmt1.executeBatch();
-        System.out.println("Database created successfully...");
+        System.out.println("delete success");
      } catch (SQLException e) {
-        System.out.println("Failed to create database.") ;
+        System.out.println("Failed to delete") ;
      }	
 	}
 	
-	
-	public static void main(String[] args) throws SQLException {
+	static int orcl_exist() {
+		
+		int i = 0;
+	    try (Statement stmt = connection.createStatement();
+	         ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM user_tables WHERE table_name IN ('LIEN', 'SITE' , 'RESULTAT')")) {
 
-	//connection("system", "anouarzerrik2003");
-	//connection2("root","anoirzerrik2003","etl");
-	//drop_table();
-	//create_table();
-	
-	DatabaseMetaData md = connection.getMetaData();
-	ResultSet rs = md.getTables(null, null, "site", null);
-	while (rs.next()) {
-	  System.out.println(rs.getString(3));
+	        if (rs.next() && rs.getInt(1) == 3) {
+	           System.out.println("Les tables existent.");
+	            i=rs.getInt(1);
+	        } else {
+	            //System.out.println("Les tables n'existent pas.");
+	        }
+
+	    } catch (SQLException e) {
+	        System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		return i;
 	}
 	
+	static int mysql_exist(String db)
+	{
+		int i = 0;
+	    try (Statement stmt = connection.createStatement();
+	         ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '" + db + "' AND table_name IN ('LIEN', 'SITE' , 'RESULTAT')")) {
+
+	        if (rs.next() && rs.getInt(1) == 3) {
+	           // System.out.println("Les tables existent.");
+	            i=rs.getInt(1);
+	        } else {
+	           // System.out.println("Les tables n'existent pas.");
+	        }
+
+	    } catch (SQLException e) {
+	        System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return i;
+	}
+	
+	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+
+	connection("system", "anouarzerrik2003");
+	//connection2("root","anoirzerrik2003","etl");
+	//drop_table();
+	//create_table_orcl();
+		orcl_exist();
+		//mysql_exist();
+		
+		//System.out.println(mysql_exist());
 	}
 }

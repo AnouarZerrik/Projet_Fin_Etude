@@ -22,10 +22,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import java.io.InputStream;
 
 public class xmllll {
 	
-	
+	static InputStream xmlInputStream;
 	
 	static String[] get_element_xml_mysql() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException, XPathExpressionException
 	{
@@ -33,7 +34,7 @@ public class xmllll {
 		String tab[] = new String[3];
 		 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
-        Document document = db.parse(new FileInputStream(new File("myFile.xml")));// same xml comments as above.
+        Document document = db.parse(new FileInputStream(new File("myFile.xml")));
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -57,10 +58,12 @@ public class xmllll {
 	static String[] get_element_xml_orcl() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException, XPathExpressionException
 	{
 		
+		
 		String tab[] = new String[2];
 		 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document document = db.parse(new FileInputStream(new File("myFile.xml")));// same xml comments as above.
+        
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -68,7 +71,6 @@ public class xmllll {
             XPathConstants.NODE);
        String  orcl_user = userElement.getAttribute("orcl_user");
        String  orcl_password = userElement.getAttribute("orcl_password");
-        
        //System.out.println(id);
        //System.out.println(name);
        
@@ -78,6 +80,37 @@ public class xmllll {
 		return tab;
 		
 		
+	}
+	
+	
+	static String[] get_element_xml_orcl1() {
+	    String[] tab = new String[2];
+	    try {
+	        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	        DocumentBuilder db = dbf.newDocumentBuilder();
+	        InputStream xmlInputStream = new FileInputStream("myFile.xml");
+	        Document document = db.parse(xmlInputStream);
+
+	        XPathFactory xpf = XPathFactory.newInstance();
+	        XPath xpath = xpf.newXPath();
+	        Element element = (Element) xpath.evaluate("/schema/element", document,
+	            XPathConstants.NODE);
+	        String orcl_user = element.getAttribute("orcl_user");
+	        String orcl_password = element.getAttribute("orcl_password");
+
+	        tab[0] = orcl_user;
+	        tab[1] = orcl_password;
+
+	    } catch (ParserConfigurationException e) {
+	        e.printStackTrace();
+	    } catch (SAXException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } catch (XPathExpressionException e) {
+	        e.printStackTrace();
+	    }
+	    return tab;
 	}
 	static void set_element_xml_mysql(String user,String password,String db) throws ParserConfigurationException, FileNotFoundException, SAXException, IOException, XPathExpressionException
 	{
@@ -203,7 +236,7 @@ public class xmllll {
 		
 		//set_element_xml();
 		
-		for ( String n : get_element_xml_orcl()) {
+		for ( String n : get_element_xml_orcl1()) {
 			System.out.println(n);
 			
 		}

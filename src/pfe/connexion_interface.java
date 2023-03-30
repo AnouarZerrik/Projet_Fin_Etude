@@ -20,11 +20,14 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
@@ -39,6 +42,7 @@ public class connexion_interface {
 	private static JTextField dbNameField;
 	private static JTextField passwordField;
 	JLabel lblNewLabel_3 = new JLabel("");
+	private final Properties properties = new Properties();
 	static String db;
 
 	/**
@@ -86,7 +90,12 @@ public class connexion_interface {
 		lblNewLabel.setBounds(390, 65, 195, 30);
 		frame.getContentPane().add(lblNewLabel);
 		
-	//	xmllll xml = new xmllll();
+		
+		try (FileInputStream input = new FileInputStream("config.properties")) {
+            properties.load(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 		
 		userField = new JTextField();
 		userField.setBounds(390, 106, 232, 42);
@@ -143,6 +152,14 @@ public class connexion_interface {
 						try {
 							Connection con = DriverManager.getConnection(url, username, password);
 							Menu_global menu = new Menu_global(username,password,db,"");
+							properties.setProperty("orcl_user", userField.getText());
+			                properties.setProperty("orcl_password", passwordField.getText());
+			                
+			                try (FileOutputStream output = new FileOutputStream("config.properties")) {
+			                    properties.store(output, "Configuration de la connexion");
+			                } catch (IOException ex) {
+			                    ex.printStackTrace();
+			                }
 							menu.frame.setVisible(true);
 							frame.setVisible(false);
 							
@@ -160,13 +177,15 @@ public class connexion_interface {
 						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "",
 								username, password);
 						Menu_global menu = new Menu_global(username,password,db,database);
-						try {
-							xmllll.set_element_xml_mysql(username, password, database);
-						} catch (XPathExpressionException | ParserConfigurationException | SAXException
-								| IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+						properties.setProperty("mysql_user", userField.getText());
+		                properties.setProperty("mysql_password", passwordField.getText());
+		                properties.setProperty("mysql_db", dbNameField.getText());
+		                
+		                try (FileOutputStream output = new FileOutputStream("config.properties")) {
+		                    properties.store(output, "Configuration de la connexion");
+		                } catch (IOException ex) {
+		                    ex.printStackTrace();
+		                }
 						menu.frame.setVisible(true);
 
 						frame.setVisible(false);
@@ -197,8 +216,7 @@ public class connexion_interface {
 		passwordField.setColumns(10);
 		passwordField.setBounds(390, 200, 232, 42);
 		frame.getContentPane().add(passwordField);
-		//xmllll xml = new xmllll();
-		//passwordField.setText(xml.get_element_xml()[1]);
+		
 	
 
 		JSeparator separator_1 = new JSeparator();
@@ -213,7 +231,7 @@ public class connexion_interface {
 			public void actionPerformed(ActionEvent e) {
 				db = (String) comboBox.getSelectedItem();
 				
-				xmllll xml = new xmllll();
+		
 				
 				if (db=="Oracle")
 				{
@@ -223,43 +241,20 @@ public class connexion_interface {
 					separator_2.setVisible(false);
 					
 					
-					try {
-						userField.setText(xml.get_element_xml_orcl()[0]);
-					} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						passwordField.setText(xml.get_element_xml_orcl()[1]);
-					} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					userField.setText(properties.getProperty("orcl_user"));
+					passwordField.setText(properties.getProperty("orcl_password"));
 					
+				
 					
 				}else {
 					dbNameField.setVisible(true);
 					lblNewLabel_1_1.setVisible(true);
 					separator_2.setVisible(true);
-					
-					try {
-						userField.setText(xml.get_element_xml_mysql()[0]);
-					} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						passwordField.setText(xml.get_element_xml_mysql()[1]);
-					} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						dbNameField.setText(xml.get_element_xml_mysql()[2]);
-					} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					userField.setText(properties.getProperty("mysql_user"));
+					passwordField.setText(properties.getProperty("mysql_password"));
+					dbNameField.setText(properties.getProperty("mysql_db"));
+				
+				
 					
 				}
 				
@@ -270,5 +265,9 @@ public class connexion_interface {
 		comboBox.setBounds(390, 24, 232, 30);
 
 		frame.getContentPane().add(comboBox);
+		
+		
+		
+		
 	}
 }

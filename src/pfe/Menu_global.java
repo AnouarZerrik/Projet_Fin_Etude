@@ -444,6 +444,32 @@ public class Menu_global {
 		});
 		mnNewMenu_5.add(mntmNewMenuItem_2);
 		frame.getContentPane().setLayout(null);
+		
+		connection conn = new connection();
+		
+		switch(db) {
+		
+		case "Oracle": 
+			conn.connection(Menu_global.this.user, Menu_global.this.password);
+			if (conn.orcl_exist() != 0) {
+				mntmNewMenuItem_2.setEnabled(false);
+				break;
+			}else {
+				mntmNewMenuItem_2.setEnabled(true);
+				JOptionPane.showMessageDialog(null, "Cree les tables !!!!");
+			}
+			
+		case "MySQL":
+			conn.connection2(Menu_global.this.user, Menu_global.this.password,Menu_global.this.database);
+			if (conn.mysql_exist(Menu_global.this.database) != 0) {
+				mntmNewMenuItem_2.setEnabled(false);
+				
+			}else {
+				mntmNewMenuItem_2.setEnabled(true);
+				JOptionPane.showMessageDialog(null, "Cree les tables !!!!");
+			}
+			break;
+		}
 
 	}
 
