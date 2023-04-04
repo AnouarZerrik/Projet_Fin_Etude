@@ -240,43 +240,7 @@ public class connection {
 		return resultat;
 	}
 
-	/*
-	 * public static List<String> STOCKAGE_Principal(String[] tab) { List<String>
-	 * List_principal = new ArrayList<String>();
-	 * 
-	 * for (int i = 0; i < tab.length; i++) { List<String> links = new
-	 * ArrayList<String>(); links = GET_LINKS_SITE(tab[i]); List<String> chemin =
-	 * new ArrayList<String>(); chemin.add("[["); chemin.add(tab[i]);
-	 * 
-	 * remplir_List_Principal2(tab, List_principal, links, chemin); chemin.clear();
-	 * } return List_principal; }
-	 * 
-	 * public static void remplir_List_Principal2(String[] tab, List<String>
-	 * list_global, List<String> links, List<String> chemin) {
-	 * 
-	 * for (String a : links) {
-	 * 
-	 * if (chemin.contains(a)) { chemin.add("]]"); list_global.addAll(chemin); int
-	 * size = chemin.size(); if (size >= 2) { chemin.subList(size - 2,
-	 * size).clear(); }
-	 * 
-	 * } else {
-	 * 
-	 * if (elementExists(tab, a)) { chemin.add(","); chemin.add(a);
-	 * remplir_List_Principal2(tab, list_global, GET_LINKS_SITE(a), chemin); } else
-	 * { chemin.add(","); chemin.add(a); chemin.add("]]");
-	 * list_global.addAll(chemin); int size = chemin.size(); if (size >= 3) {
-	 * chemin.subList(size - 3, size).clear(); } }
-	 * 
-	 * }
-	 * 
-	 * }
-	 * 
-	 * int size1 = chemin.size(); if (size1 >= 2) { chemin.subList(size1 - 2,
-	 * size1).clear(); }
-	 * 
-	 * }
-	 */
+	
 
 	public static boolean elementExists(String[] liste, String element) {
 		for (String str : liste) {
@@ -363,8 +327,7 @@ public class connection {
 		return ip_site_inpute;
 	}
 
-	//
-	//
+	
 
 	public int get_MAX() {
 		int id = 0;
@@ -446,17 +409,7 @@ public class connection {
 			e.printStackTrace();
 		}
 	}
-	static void connection1(String user, String password1) {
-		String jdbcUrl = "jdbc:oracle:thin:@localhost:1521:ORCL";
-		String username = user;
-		String password = password1;
-		try {
-			connection = DriverManager.getConnection(jdbcUrl, username, password);
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+	
 	static void connection2(String user, String password1,String database) {
 		try{ 
 			   Class.forName("com.mysql.cj.jdbc.Driver");
@@ -489,12 +442,9 @@ public class connection {
 		Statement stmt = null;
 		try {
 		stmt = connection.createStatement();
-		//stmt.addBatch("CREATE TABLE mytable (id NUMBER, name VARCHAR2(50))");
-		//stmt.addBatch("CREATE TABLE mytable1 (id NUMBER, name VARCHAR2(50))");
 		String sql = "CREATE TABLE lien (LIEN1 varchar(255),LIEN2 varchar(255))";
 		String sql1 = "CREATE TABLE site(SITE_NAME varchar(255),IP varchar(255))";
 		String sql2 = "CREATE TABLE resultat (SITE varchar(255),ID_TRAITEMENT int,DATE_INSERT date ,CHEMIN longtext)";
-		//stmt1.executeBatch();
 		stmt.execute(sql);
 		stmt.execute(sql1);
 		stmt.execute(sql2);
@@ -511,12 +461,9 @@ public class connection {
 		Statement stmt = null;
 		try {
 		stmt = connection.createStatement();
-		//stmt.addBatch("CREATE TABLE mytable (id NUMBER, name VARCHAR2(50))");
-		//stmt.addBatch("CREATE TABLE mytable1 (id NUMBER, name VARCHAR2(50))");
 		String sql = "CREATE TABLE lien (LIEN1 varchar(255),LIEN2 varchar(255))";
 		String sql1 = "CREATE TABLE site(SITE_NAME varchar(255),IP varchar(255))";
 		String sql2 = "CREATE TABLE resultat (SITE varchar(255),ID_TRAITEMENT int,DATE_INSERT date ,CHEMIN CLOB)";
-		//stmt1.executeBatch();
 		stmt.execute(sql);
 		stmt.execute(sql1);
 		stmt.execute(sql2);
@@ -556,7 +503,6 @@ public class connection {
 	           System.out.println("Les tables existent.");
 	            i=rs.getInt(1);
 	        } else {
-	            //System.out.println("Les tables n'existent pas.");
 	        }
 
 	    } catch (SQLException e) {
@@ -574,10 +520,9 @@ public class connection {
 	         ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '" + db + "' AND table_name IN ('LIEN', 'SITE' , 'RESULTAT')")) {
 
 	        if (rs.next() && rs.getInt(1) == 3) {
-	           // System.out.println("Les tables existent.");
+	           
 	            i=rs.getInt(1);
 	        } else {
-	           // System.out.println("Les tables n'existent pas.");
 	        }
 
 	    } catch (SQLException e) {
@@ -589,15 +534,5 @@ public class connection {
 	    return i;
 	}
 	
-	public static void main(String[] args) throws SQLException, ClassNotFoundException {
-
-	connection("system", "anouarzerrik2003");
-	//connection2("root","anoirzerrik2003","etl");
-	//drop_table();
-	//create_table_orcl();
-		orcl_exist();
-		//mysql_exist();
-		
-		//System.out.println(mysql_exist());
-	}
+	
 }

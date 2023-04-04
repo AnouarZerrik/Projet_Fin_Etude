@@ -18,6 +18,8 @@ import org.xml.sax.SAXException;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -30,10 +32,10 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
-import javax.swing.ImageIcon;
 import java.awt.Choice;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 
 public class connexion_interface {
 
@@ -44,11 +46,6 @@ public class connexion_interface {
 	JLabel lblNewLabel_3 = new JLabel("");
 	private final Properties properties = new Properties();
 	static String db;
-
-	/**
-	 * Launch the application.
-	 */
-
 	static String[] values_con() {
 		String tab[] = null;
 
@@ -60,48 +57,57 @@ public class connexion_interface {
 
 	/**
 	 * Create the application.
-	 * @throws IOException 
-	 * @throws SAXException 
-	 * @throws ParserConfigurationException 
-	 * @throws XPathExpressionException 
-	 * @throws FileNotFoundException 
+	 * 
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws ParserConfigurationException
+	 * @throws XPathExpressionException
+	 * @throws FileNotFoundException
 	 */
-	public connexion_interface() throws FileNotFoundException, XPathExpressionException, ParserConfigurationException, SAXException, IOException {
+	public connexion_interface() throws FileNotFoundException, XPathExpressionException, ParserConfigurationException,
+			SAXException, IOException {
+		
 		initialize();
+		Image icon = new ImageIcon(this.getClass().getResource("/img/log.png")).getImage();
+		frame.setIconImage(icon);
+		
+		  
 	}
 
 	/**
 	 * Initialize the contents of the frame.
-	 * @throws IOException 
-	 * @throws SAXException 
-	 * @throws ParserConfigurationException 
-	 * @throws XPathExpressionException 
-	 * @throws FileNotFoundException 
+	 * 
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws ParserConfigurationException
+	 * @throws XPathExpressionException
+	 * @throws FileNotFoundException
 	 */
-	private void initialize() throws FileNotFoundException, XPathExpressionException, ParserConfigurationException, SAXException, IOException {
+	private void initialize() throws FileNotFoundException, XPathExpressionException, ParserConfigurationException,
+			SAXException, IOException {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(UIManager.getColor("Button.disabledShadow"));
 		frame.setBounds(100, 100, 682, 467);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
 
 		JLabel lblNewLabel = new JLabel("Nom d'utilisateur :");
 		lblNewLabel.setFont(new Font("Arial Black", Font.PLAIN, 13));
 		lblNewLabel.setBounds(390, 65, 195, 30);
 		frame.getContentPane().add(lblNewLabel);
-		
-		
+
 		try (FileInputStream input = new FileInputStream("config.properties")) {
-            properties.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		
+			properties.load(input);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		userField = new JTextField();
 		userField.setBounds(390, 106, 232, 42);
 		frame.getContentPane().add(userField);
 		userField.setColumns(10);
-		//userField.setText(xml.get_element_xml()[0]);
+		// userField.setText(xml.get_element_xml()[0]);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.GRAY);
@@ -136,10 +142,7 @@ public class connexion_interface {
 		connectButton.setFont(new Font("Arial Black", Font.PLAIN, 13));
 		connectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
-				
-				
+
 				String username = userField.getText();
 				String password = new String(((JPasswordField) passwordField).getPassword());
 				String database = dbNameField.getText();
@@ -151,18 +154,18 @@ public class connexion_interface {
 						String url = "jdbc:oracle:thin:@localhost:1521:xe";
 						try {
 							Connection con = DriverManager.getConnection(url, username, password);
-							Menu_global menu = new Menu_global(username,password,db,"");
+							Menu_global menu = new Menu_global(username, password, db, "");
 							properties.setProperty("orcl_user", userField.getText());
-			                properties.setProperty("orcl_password", passwordField.getText());
-			                
-			                try (FileOutputStream output = new FileOutputStream("config.properties")) {
-			                    properties.store(output, "Configuration de la connexion");
-			                } catch (IOException ex) {
-			                    ex.printStackTrace();
-			                }
+							properties.setProperty("orcl_password", passwordField.getText());
+
+							try (FileOutputStream output = new FileOutputStream("config.properties")) {
+								properties.store(output, "Configuration de la connexion");
+							} catch (IOException ex) {
+								ex.printStackTrace();
+							}
 							menu.frame.setVisible(true);
 							frame.setVisible(false);
-							
+
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -176,23 +179,19 @@ public class connexion_interface {
 						Class.forName("com.mysql.cj.jdbc.Driver");
 						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "",
 								username, password);
-						Menu_global menu = new Menu_global(username,password,db,database);
+						Menu_global menu = new Menu_global(username, password, db, database);
 						properties.setProperty("mysql_user", userField.getText());
-		                properties.setProperty("mysql_password", passwordField.getText());
-		                properties.setProperty("mysql_db", dbNameField.getText());
-		                
-		                try (FileOutputStream output = new FileOutputStream("config.properties")) {
-		                    properties.store(output, "Configuration de la connexion");
-		                } catch (IOException ex) {
-		                    ex.printStackTrace();
-		                }
+						properties.setProperty("mysql_password", passwordField.getText());
+						properties.setProperty("mysql_db", dbNameField.getText());
+
+						try (FileOutputStream output = new FileOutputStream("config.properties")) {
+							properties.store(output, "Configuration de la connexion");
+						} catch (IOException ex) {
+							ex.printStackTrace();
+						}
 						menu.frame.setVisible(true);
 
 						frame.setVisible(false);
-						// String url = "jdbc:mysql://localhost:3306/" +
-						// dbName+"?characterEncoding=UTF-8";
-						// Connection con = DriverManager.getConnection(url, user, password);
-						// System.out.println("success");
 					} catch (SQLException ex) {
 					} catch (ClassNotFoundException ex) {
 					}
@@ -216,8 +215,6 @@ public class connexion_interface {
 		passwordField.setColumns(10);
 		passwordField.setBounds(390, 200, 232, 42);
 		frame.getContentPane().add(passwordField);
-		
-	
 
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(390, 240, 209, 2);
@@ -230,34 +227,26 @@ public class connexion_interface {
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				db = (String) comboBox.getSelectedItem();
-				
-		
-				
-				if (db=="Oracle")
-				{
-					
+
+				if (db == "Oracle") {
+
 					dbNameField.setVisible(false);
 					lblNewLabel_1_1.setVisible(false);
 					separator_2.setVisible(false);
-					
-					
+
 					userField.setText(properties.getProperty("orcl_user"));
 					passwordField.setText(properties.getProperty("orcl_password"));
-					
-				
-					
-				}else {
+
+				} else {
 					dbNameField.setVisible(true);
 					lblNewLabel_1_1.setVisible(true);
 					separator_2.setVisible(true);
 					userField.setText(properties.getProperty("mysql_user"));
 					passwordField.setText(properties.getProperty("mysql_password"));
 					dbNameField.setText(properties.getProperty("mysql_db"));
-				
-				
-					
+
 				}
-				
+
 			}
 		});
 		comboBox.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -265,9 +254,6 @@ public class connexion_interface {
 		comboBox.setBounds(390, 24, 232, 30);
 
 		frame.getContentPane().add(comboBox);
-		
-		
-		
-		
+
 	}
 }

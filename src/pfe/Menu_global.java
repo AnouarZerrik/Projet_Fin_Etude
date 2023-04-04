@@ -26,11 +26,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.border.LineBorder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -82,6 +86,8 @@ public class Menu_global {
 		this.db = db;
 
 		initialize();
+		Image icon = new ImageIcon(this.getClass().getResource("/img/log.png")).getImage();
+		frame.setIconImage(icon);
 	}
 
 	private void initialize() {
@@ -111,8 +117,8 @@ public class Menu_global {
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				option = 1;
-				CSVImporter csv = new CSVImporter(option,Menu_global.this.db,Menu_global.this.user,Menu_global.this.password,Menu_global.this.database);
-				// csv.frame.setVisible(true);
+				CSVImporter csv = new CSVImporter(option, Menu_global.this.db, Menu_global.this.user,
+						Menu_global.this.password, Menu_global.this.database);
 			}
 		});
 		mnNewMenu_6.add(mntmNewMenuItem);
@@ -121,7 +127,8 @@ public class Menu_global {
 		mntmNewMenuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				option = 2;
-				CSVImporter csv = new CSVImporter(option,db,Menu_global.this.user,Menu_global.this.password,Menu_global.this.database);
+				CSVImporter csv = new CSVImporter(option, db, Menu_global.this.user, Menu_global.this.password,
+						Menu_global.this.database);
 			}
 		});
 		mnNewMenu_6.add(mntmNewMenuItem_3);
@@ -136,7 +143,8 @@ public class Menu_global {
 		mntmCsv_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				StorageLocationChooser win_csv = new StorageLocationChooser(Menu_global.this.user,Menu_global.this.password,Menu_global.this.database,Menu_global.this.db);
+				StorageLocationChooser win_csv = new StorageLocationChooser(Menu_global.this.user,
+						Menu_global.this.password, Menu_global.this.database, Menu_global.this.db);
 				win_csv.setVisible(true);
 			}
 		});
@@ -149,9 +157,10 @@ public class Menu_global {
 		mntmPourUnSite.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				result_win win = new result_win(Menu_global.this.user, Menu_global.this.password,Menu_global.this.database,Menu_global.this.db);
+				result_win win = new result_win(Menu_global.this.user, Menu_global.this.password,
+						Menu_global.this.database, Menu_global.this.db);
 				win.frame.setVisible(true);
-				
+
 			}
 		});
 		mnNewMenu_3.add(mntmPourUnSite);
@@ -195,9 +204,6 @@ public class Menu_global {
 		mntmPourTous.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				// MessageDialogExample l = new MessageDialogExample();
-				// Stop_btn.setVisible(true);
-				// lblNewLabel.setVisible(true);
 				panel.setVisible(true);
 				Thread Thread = new Thread(new Runnable() {
 
@@ -224,7 +230,6 @@ public class Menu_global {
 							for (String element : con.GetALLSites()) {
 								i++;
 								index++;
-								//System.out.println(i);
 								con.connection(Menu_global.this.user, Menu_global.this.password);
 								String ip = con.get_ip_site(element);
 								String[] tab = con.get_SITES(ip, con.get_ip_site(element));
@@ -274,8 +279,6 @@ public class Menu_global {
 
 								if (stop == 1) {
 									stop = 0;
-									// Stop_btn.setVisible(false);
-									// lblNewLabel.setVisible(false);
 									panel.setVisible(false);
 									con.connection(Menu_global.this.user, Menu_global.this.password);
 									con.delete_traitement(id_max);
@@ -299,7 +302,8 @@ public class Menu_global {
 							int id_max1 = 0;
 							int i1 = 0;
 
-							con.connection2(Menu_global.this.user, Menu_global.this.password,Menu_global.this.database);
+							con.connection2(Menu_global.this.user, Menu_global.this.password,
+									Menu_global.this.database);
 							id_max1 = con.get_MAX1();
 							try {
 								con.connection.close();
@@ -311,8 +315,8 @@ public class Menu_global {
 							for (String element : con.GetALLSites()) {
 								i1++;
 								index1++;
-								//System.out.println(i1);
-								con.connection2(Menu_global.this.user, Menu_global.this.password,Menu_global.this.database);
+								con.connection2(Menu_global.this.user, Menu_global.this.password,
+										Menu_global.this.database);
 								String ip = con.get_ip_site(element);
 								String[] tab = con.get_SITES(ip, con.get_ip_site(element));
 								List<String> List_principal = con.STOCKAGE_Principal(tab);
@@ -361,10 +365,9 @@ public class Menu_global {
 
 								if (stop == 1) {
 									stop = 0;
-									// Stop_btn.setVisible(false);
-									// lblNewLabel.setVisible(false);
 									panel.setVisible(false);
-									con.connection2(Menu_global.this.user, Menu_global.this.password,Menu_global.this.database);
+									con.connection2(Menu_global.this.user, Menu_global.this.password,
+											Menu_global.this.database);
 									con.delete_traitement(id_max1);
 									JOptionPane.showMessageDialog(null, "DELETE With Success");
 									try {
@@ -393,14 +396,6 @@ public class Menu_global {
 		});
 		mnNewMenu_3.add(mntmPourTous);
 
-		JMenu mnNewMenu_4 = new JMenu("Tab_bord");
-		mnNewMenu_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		menuBar.add(mnNewMenu_4);
-
 		JMenu mnNewMenu_5 = new JMenu("Config");
 		menuBar.add(mnNewMenu_5);
 
@@ -424,17 +419,17 @@ public class Menu_global {
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				connection con = new connection();
-				
+
 				switch (db) {
 				case "Oracle":
 					con.connection(Menu_global.this.user, Menu_global.this.password);
-					
+
 					con.drop_table();
 					con.create_table_orcl();
 					JOptionPane.showMessageDialog(null, "Create With Success");
 					break;
 				case "MySQL":
-					con.connection2(Menu_global.this.user, Menu_global.this.password,Menu_global.this.database);
+					con.connection2(Menu_global.this.user, Menu_global.this.password, Menu_global.this.database);
 					con.drop_table();
 					con.create_table();
 					JOptionPane.showMessageDialog(null, "Create With Success");
@@ -444,27 +439,27 @@ public class Menu_global {
 		});
 		mnNewMenu_5.add(mntmNewMenuItem_2);
 		frame.getContentPane().setLayout(null);
-		
+
 		connection conn = new connection();
-		
-		switch(db) {
-		
-		case "Oracle": 
+
+		switch (db) {
+
+		case "Oracle":
 			conn.connection(Menu_global.this.user, Menu_global.this.password);
 			if (conn.orcl_exist() != 0) {
 				mntmNewMenuItem_2.setEnabled(false);
 				break;
-			}else {
+			} else {
 				mntmNewMenuItem_2.setEnabled(true);
 				JOptionPane.showMessageDialog(null, "Cree les tables !!!!");
 			}
-			
+			break;
 		case "MySQL":
-			conn.connection2(Menu_global.this.user, Menu_global.this.password,Menu_global.this.database);
+			conn.connection2(Menu_global.this.user, Menu_global.this.password, Menu_global.this.database);
 			if (conn.mysql_exist(Menu_global.this.database) != 0) {
 				mntmNewMenuItem_2.setEnabled(false);
-				
-			}else {
+
+			} else {
 				mntmNewMenuItem_2.setEnabled(true);
 				JOptionPane.showMessageDialog(null, "Cree les tables !!!!");
 			}

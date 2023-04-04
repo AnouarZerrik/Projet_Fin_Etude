@@ -5,11 +5,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -30,7 +33,7 @@ public class result_win {
 
 	public String user;
 	public String password;
-	static String db ;
+	static String db;
 	public String database;
 
 	JFrame frame;
@@ -40,29 +43,6 @@ public class result_win {
 
 	// -----------------------------//-----------------------------//-----------------------------//-----------------------------
 
-	/*
-	 * public static void GetALLSitesPaths(List <String> liste) {
-	 * 
-	 * for (String element : liste) {
-	 * 
-	 * String ip = get_ip_site(element); String[] tab = get_SITES(ip,
-	 * get_ip_site(element)); List<String> List_principal = new ArrayList<String>();
-	 * List_principal = STOCKAGE_Principal(tab);
-	 * 
-	 * 
-	 * String query = "INSERT INTO RESULTAT (SITE, DATE_INSERT, CHEMIN) VALUES ('" +
-	 * element + "',?,'" + List_principal+ "' )"; Statement statement = null;
-	 * ResultSet resultSet = null;
-	 * 
-	 * 
-	 * try { statement = connection.createStatement(); resultSet =
-	 * statement.executeQuery(query); } catch (SQLException e) { // TODO
-	 * Auto-generated catch block e.printStackTrace(); }
-	 * 
-	 * 
-	 * 
-	 * } }
-	 */
 	public static List<String> GetALLSites() {
 		List<String> liste = new ArrayList<String>();
 		String query = "SELECT SITE_NAME FROM SITE ";
@@ -94,7 +74,6 @@ public class result_win {
 			String[] tab = get_SITES(ip, get_ip_site(element));
 			List<String> List_principal = STOCKAGE_Principal(tab);
 
-			// Convertir la liste en une chaîne de caractères séparée par des virgules
 			String joinedString = String.join(",", List_principal);
 
 			String query = "INSERT INTO RESULTAT (SITE,CHEMIN) VALUES (?,?)";
@@ -103,7 +82,6 @@ public class result_win {
 			try {
 				statement = connection.prepareStatement(query);
 				statement.setString(1, element);
-				// statement.setDate(2,new Date(System.currentTimeMillis())); // date courante
 				statement.setString(2, joinedString);
 				statement.executeUpdate();
 			} catch (SQLException e) {
@@ -339,44 +317,36 @@ public class result_win {
 			e.printStackTrace();
 		}
 	}
-	static void connection2(String user, String password1,String database) {
-		try{ 
-			   Class.forName("com.mysql.cj.jdbc.Driver");
-			   connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+database+"",user,password1);
-			  // System.out.println("Connect");
-			   }catch(Exception e){
-			    System.out.println(e);
-			   } 
+
+	static void connection2(String user, String password1, String database) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "", user, password1);
+			// System.out.println("Connect");
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try {
-	 * 
-	 * result_win window = new result_win(); window.frame.setVisible(true); } catch
-	 * (Exception e) { e.printStackTrace(); } } }); }
-	 */
-
-	/**
-	 * Create the application.
-	 */
-	public result_win(String user, String password,String database , String db) {
+	public result_win(String user, String password, String database, String db) {
 		this.password = password;
 		this.user = user;
-		this.database=database;
-		this.db=db;
+		this.database = database;
+		this.db = db;
 
-		initialize(user,password,database,db);
+		initialize(user, password, database, db);
+		Image icon = new ImageIcon(this.getClass().getResource("/img/log.png")).getImage();
+		frame.setIconImage(icon);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(String user, String password,String database , String db) {
+	private void initialize(String user, String password, String database, String db) {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(SystemColor.inactiveCaption);
 		frame.setBounds(100, 100, 647, 472);
-		
+
 		frame.getContentPane().setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("Site :");
@@ -409,50 +379,49 @@ public class result_win {
 
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-					switch(db) {
-					case "Oracle":
-						connection11(user, password);
-						//connection2(user,password,database);
-							String site = textField.getText();
-							String ip = get_ip_site(site);
-							String[] tab = get_SITES(ip, get_ip_site(site));
-							List<String> List_principal = new ArrayList<String>();
-							List_principal = STOCKAGE_Principal(tab);
 
-							textArea.setText("");
-							for (String element : List_principal) {
+				switch (db) {
+				case "Oracle":
+					connection11(user, password);
+					// connection2(user,password,database);
+					String site = textField.getText();
+					String ip = get_ip_site(site);
+					String[] tab = get_SITES(ip, get_ip_site(site));
+					List<String> List_principal = new ArrayList<String>();
+					List_principal = STOCKAGE_Principal(tab);
 
-								if (element != "]]") {
+					textArea.setText("");
+					for (String element : List_principal) {
 
-									textArea.append(element);
-								} else {
-									textArea.append(element + "\n");
-								}}
-						
-					case "MySQL":
-					
-						connection2(user,password,database);
-						String site1 = textField.getText();
-						String ip1 = get_ip_site(site1);
-						String[] tab1 = get_SITES(ip1, get_ip_site(site1));
-						List<String> List_principal1 = new ArrayList<String>();
-						List_principal1 = STOCKAGE_Principal(tab1);
+						if (element != "]]") {
 
-						textArea.setText("");
-						for (String element : List_principal1) {
-
-							if (element != "]]") {
-
-								textArea.append(element);
-							} else {
-								textArea.append(element + "\n");
-							}
-		
+							textArea.append(element);
+						} else {
+							textArea.append(element + "\n");
 						}
 					}
-				
-				
+
+				case "MySQL":
+
+					connection2(user, password, database);
+					String site1 = textField.getText();
+					String ip1 = get_ip_site(site1);
+					String[] tab1 = get_SITES(ip1, get_ip_site(site1));
+					List<String> List_principal1 = new ArrayList<String>();
+					List_principal1 = STOCKAGE_Principal(tab1);
+
+					textArea.setText("");
+					for (String element : List_principal1) {
+
+						if (element != "]]") {
+
+							textArea.append(element);
+						} else {
+							textArea.append(element + "\n");
+						}
+
+					}
+				}
 
 			}
 		});

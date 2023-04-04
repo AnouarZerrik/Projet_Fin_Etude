@@ -1,7 +1,9 @@
 package pfe;
 
 import java.awt.EventQueue;
+import java.awt.Image;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -29,18 +31,19 @@ public class CSVImporter extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private static final long serialVersionUID = 1L;
-    private JTextField filePathTextField;
-    private JButton browseButton;
-    private JButton importButton;
-    private JLabel statusLabel;
-    static int option=0;
-    static String db ;
-    
-    public String user;
+	private JTextField filePathTextField;
+	private JButton browseButton;
+	private JButton importButton;
+	private JLabel statusLabel;
+	static int option = 0;
+	static String db;
+
+	public String user;
 	public String password;
 	public String database;
-    //JFrame frame;
-    static int i = 0;
+	// JFrame frame;
+	static int i = 0;
+
 	/**
 	 * Launch the application.
 	 */
@@ -50,136 +53,132 @@ public class CSVImporter extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public CSVImporter(int option,String db,String user, String password, String database) {
-		
+	public CSVImporter(int option, String db, String user, String password, String database) {
 
-        super("CSV Importer");
-        
-        this.option=option;
-        this.db=db;
-        this.password = password;
+		super("CSV Importer");
+
+		this.option = option;
+		this.db = db;
+		this.password = password;
 		this.user = user;
 		this.database = database;
-        
-        filePathTextField = new JTextField(20);
-        browseButton = new JButton("Browse");
-        importButton = new JButton("Import");
-        statusLabel = new JLabel("Please select a CSV file to import.");
+		Image icon = new ImageIcon(this.getClass().getResource("/img/log.png")).getImage();
+		this.setIconImage(icon);
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.add(new JLabel("File path:"));
-        mainPanel.add(filePathTextField);
-        mainPanel.add(browseButton);
-        mainPanel.add(importButton);
-        mainPanel.add(statusLabel);
+		filePathTextField = new JTextField(20);
+		browseButton = new JButton("Browse");
+		importButton = new JButton("Import");
+		statusLabel = new JLabel("Please select a CSV file to import.");
 
-        Container contentPane = getContentPane();
-        contentPane.add(mainPanel, BorderLayout.CENTER);
+		JPanel mainPanel = new JPanel();
+		mainPanel.add(new JLabel("File path:"));
+		mainPanel.add(filePathTextField);
+		mainPanel.add(browseButton);
+		mainPanel.add(importButton);
+		mainPanel.add(statusLabel);
 
-        browseButton.addActionListener(this);
-        importButton.addActionListener(this);
+		Container contentPane = getContentPane();
+		contentPane.add(mainPanel, BorderLayout.CENTER);
 
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        pack();
-        setVisible(true);
+		browseButton.addActionListener(this);
+		importButton.addActionListener(this);
+
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		pack();
+		setVisible(true);
 	}
+
 	public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == browseButton) {
-            JFileChooser fileChooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV files", "csv");
-            fileChooser.setFileFilter(filter);
-            int result = fileChooser.showOpenDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                filePathTextField.setText(fileChooser.getSelectedFile().getAbsolutePath());
-            }
-        } else if (e.getSource() == importButton) {
-            String filePath = filePathTextField.getText();
-            if (filePath.isEmpty()) {
-                statusLabel.setText("Please select a CSV file to import.");
-                return;
-            }
+		if (e.getSource() == browseButton) {
+			JFileChooser fileChooser = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV files", "csv");
+			fileChooser.setFileFilter(filter);
+			int result = fileChooser.showOpenDialog(this);
+			if (result == JFileChooser.APPROVE_OPTION) {
+				filePathTextField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+			}
+		} else if (e.getSource() == importButton) {
+			String filePath = filePathTextField.getText();
+			if (filePath.isEmpty()) {
+				statusLabel.setText("Please select a CSV file to import.");
+				return;
+			}
 
 			Thread Thread = new Thread(new Runnable() {
 
 				@Override
 				public void run() {
-					  try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            String[] values;
-           // importButton.enable(true);
-            statusLabel.setText("Import en cour ....");
-            for (int i = 0; (line = reader.readLine()) != null; i++) {
-                values = line.split(";");
-                
-                
-                
-                connection con = new connection();
-               // connection con1 = new connection();
-                PreparedStatement pstmt;
-                String sql = null;
-                switch (db) {
-                case "Oracle": 
-					con.connection(CSVImporter.this.user, CSVImporter.this.password);
-					try  {
-	                	
-	                	if ( option== 1) {
-	                	    sql = "INSERT INTO LIEN VALUES (?, ?)";
-	                   }else if(option==2) {
-	                	    sql = "INSERT INTO SITE VALUES (?, ?)";
-	                   }
-	                    pstmt = con.connection.prepareStatement(sql);
-	                    pstmt.setString(1, values[0]);
-	                    pstmt.setString(2, values[1]);
-	                    pstmt.executeUpdate();
-	                    con.connection.close();
-	                    System.out.println(i);
-	                } catch (SQLException ex) {
-	                    statusLabel.setText("Error: " + ex.getMessage());
-	                    return;
-	                }
-					break;
-				case "MySQL":
-                
-					
-					try  {
-						
-						Class.forName("com.mysql.cj.jdbc.Driver");
-						Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + CSVImporter.this.database + "",
-								CSVImporter.this.user, CSVImporter.this.password);
-	                	
-	                	if ( option== 1) {
-	                	    sql = "INSERT INTO LIEN VALUES (?, ?)";
-	                   }else if(option==2) {
-	                	   sql = "INSERT INTO site VALUES (?, ?)";
-	                   }
-	                     pstmt = conn.prepareStatement(sql);
-	                    pstmt.setString(1, values[0]);
-	                    pstmt.setString(2, values[1]);
-	                    pstmt.executeUpdate();
-	                   conn.close();
-	                    System.out.println(i);
-	                } catch (SQLException ex) {
-	                    statusLabel.setText("Error: " + ex.getMessage());
-	                    System.out.println("error");
-	                    return;
-	                }
-                
-					break;
-				
-                }
-                
-                
-         //Fin de Switch
-                
-            }
-            statusLabel.setText("Import complete.");
-        } catch (Exception ex) {
-            statusLabel.setText("Error: " + ex.getMessage());
-        }
+					try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+						String line;
+						String[] values;
+						statusLabel.setText("Import en cour ....");
+						for (int i = 0; (line = reader.readLine()) != null; i++) {
+							values = line.split(";");
+
+							connection con = new connection();
+							PreparedStatement pstmt;
+							String sql = null;
+							switch (db) {
+							case "Oracle":
+								con.connection(CSVImporter.this.user, CSVImporter.this.password);
+								try {
+
+									if (option == 1) {
+										sql = "INSERT INTO LIEN VALUES (?, ?)";
+									} else if (option == 2) {
+										sql = "INSERT INTO SITE VALUES (?, ?)";
+									}
+									pstmt = con.connection.prepareStatement(sql);
+									pstmt.setString(1, values[0]);
+									pstmt.setString(2, values[1]);
+									pstmt.executeUpdate();
+									con.connection.close();
+									System.out.println(i);
+								} catch (SQLException ex) {
+									statusLabel.setText("Error: " + ex.getMessage());
+									return;
+								}
+								break;
+							case "MySQL":
+
+								try {
+
+									Class.forName("com.mysql.cj.jdbc.Driver");
+									Connection conn = DriverManager.getConnection(
+											"jdbc:mysql://localhost:3306/" + CSVImporter.this.database + "",
+											CSVImporter.this.user, CSVImporter.this.password);
+
+									if (option == 1) {
+										sql = "INSERT INTO LIEN VALUES (?, ?)";
+									} else if (option == 2) {
+										sql = "INSERT INTO site VALUES (?, ?)";
+									}
+									pstmt = conn.prepareStatement(sql);
+									pstmt.setString(1, values[0]);
+									pstmt.setString(2, values[1]);
+									pstmt.executeUpdate();
+									conn.close();
+									System.out.println(i);
+								} catch (SQLException ex) {
+									statusLabel.setText("Error: " + ex.getMessage());
+									System.out.println("error");
+									return;
+								}
+
+								break;
+
+							}
+
+						}
+						statusLabel.setText("Import complete.");
+					} catch (Exception ex) {
+						statusLabel.setText("Error: " + ex.getMessage());
+					}
 				}
 			});
 			Thread.start();
-		
-        }}
+
+		}
+	}
 
 }

@@ -28,19 +28,6 @@ public class intermediare {
 	public String user;
 	public String password;
 
-	/**
-	 * Launch the application.
-	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { intermediare window = new
-	 * intermediare(this.user,this.password); window.frame.setVisible(true); } catch
-	 * (Exception e) { e.printStackTrace(); } } }); }
-	 */
-
-	/**
-	 * Create the application.
-	 */
 	public intermediare(String user, String password) {
 
 		this.password = password;
@@ -61,7 +48,8 @@ public class intermediare {
 		btn1.setBounds(55, 96, 118, 42);
 		btn1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				result_win window = new result_win(intermediare.this.user, intermediare.this.password,intermediare.this.password,intermediare.this.password);
+				result_win window = new result_win(intermediare.this.user, intermediare.this.password,
+						intermediare.this.password, intermediare.this.password);
 				window.frame.setVisible(true);
 
 			}
@@ -70,11 +58,6 @@ public class intermediare {
 		frame.getContentPane().add(btn1);
 
 		// ------------------------
-
-		// ------------------------
-
-		// Stop_btn.setVisible(false);
-		// lblNewLabel.setVisible(false);
 
 		JButton Stop_btn = new JButton("Stop");
 		Stop_btn.setBounds(223, 250, 89, 23);
@@ -93,8 +76,6 @@ public class intermediare {
 		btn2.setBounds(201, 96, 118, 42);
 		btn2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				// MessageDialogExample l = new MessageDialogExample();
 				Stop_btn.setVisible(true);
 				lblNewLabel.setVisible(true);
 
@@ -200,42 +181,3 @@ public class intermediare {
 
 	}
 }
-
-/*
- * 
- * 
- * int id_max = 0; connection con = new connection(); int i = 0;
- * con.connection(intermediare.this.user, intermediare.this.password); id_max =
- * con.get_MAX(); try { con.connection.close(); } catch (SQLException e1) { //
- * TODO Auto-generated catch block e1.printStackTrace(); } int index = 0; for
- * (String element : con.GetALLSites()) { i++; index++; System.out.println(i);
- * con.connection(intermediare.this.user, intermediare.this.password); String ip
- * = con.get_ip_site(element); String[] tab = con.get_SITES(ip,
- * con.get_ip_site(element)); List<String> List_principal =
- * con.STOCKAGE_Principal(tab);
- * 
- * StringBuilder sb = new StringBuilder(); for (String s : List_principal) {
- * sb.append(s);
- * 
- * if (s == "]]") { sb.append(" "); } } String result = sb.toString().trim();
- * 
- * String query = "INSERT INTO RESULTAT  VALUES (?,?,?,?)"; PreparedStatement
- * statement = null;
- * 
- * try { statement = con.connection.prepareStatement(query);
- * statement.setString(1, element); statement.setInt(2, id_max); Date date = new
- * Date(); SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); String
- * formattedDate = sdf.format(date); statement.setString(3, formattedDate);
- * statement.setString(4, result);
- * 
- * statement.executeUpdate(); } catch (SQLException e1) { e1.printStackTrace();
- * } finally { if (statement != null) { try { statement.close(); } catch
- * (SQLException e1) { e1.printStackTrace(); } } } try { con.connection.close();
- * } catch (SQLException e1) { // TODO Auto-generated catch block
- * e1.printStackTrace(); }
- * 
- * 
- * 
- * 
- * }
- */
