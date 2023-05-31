@@ -18,7 +18,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 import java.io.File;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -61,9 +60,7 @@ public class connection {
 				if (size >= 1) {
 					chemin.subList(size - 1, size).clear();
 				}
-
 			} else {
-
 				if (elementExists(tab, a)) {
 					chemin.add("-");
 					chemin.add(a);
@@ -78,16 +75,13 @@ public class connection {
 						chemin.subList(size - 3, size).clear();
 					}
 				}
-
 			}
-
 		}
 
 		int size1 = chemin.size();
 		if (size1 >= 2) {
 			chemin.subList(size1 - 2, size1).clear();
 		}
-
 	}
 
 	public static List<String> GetALLSites() {
@@ -240,8 +234,6 @@ public class connection {
 		return resultat;
 	}
 
-	
-
 	public static boolean elementExists(String[] liste, String element) {
 		for (String str : liste) {
 			if (str.equals(element)) {
@@ -327,8 +319,6 @@ public class connection {
 		return ip_site_inpute;
 	}
 
-	
-
 	public int get_MAX() {
 		int id = 0;
 		String query = "SELECT nvl(MAX(ID_TRAITEMENT),0)+1 FROM RESULTAT ";
@@ -347,7 +337,7 @@ public class connection {
 		}
 		return id;
 	}
-	
+
 	static int get_MAX1() {
 		int id = 0;
 		String query = "SELECT MAX(ID_TRAITEMENT) FROM RESULTAT ";
@@ -364,7 +354,7 @@ public class connection {
 		} catch (SQLException e1) {
 			System.out.println("Error connecting to Oracle database: " + e1.getMessage());
 		}
-		
+
 		id++;
 		return id;
 	}
@@ -404,20 +394,20 @@ public class connection {
 		String password = password1;
 		try {
 			connection = DriverManager.getConnection(jdbcUrl, username, password);
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	static void connection2(String user, String password1,String database) {
-		try{ 
-			   Class.forName("com.mysql.cj.jdbc.Driver");
-			   connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+database+"",user,password1);
-			  System.out.println("Connect");
-			   }catch(Exception e){
-			    System.out.println(e);
-			   } 
+
+	static void connection2(String user, String password1, String database) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "", user, password1);
+			System.out.println("Connect");
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	static void delete_traitement(int id) {
@@ -436,103 +426,99 @@ public class connection {
 
 	}
 
-	
-	static void create_table()
-	{
+	static void create_table() {
 		Statement stmt = null;
 		try {
-		stmt = connection.createStatement();
-		String sql = "CREATE TABLE lien (LIEN1 varchar(255),LIEN2 varchar(255))";
-		String sql1 = "CREATE TABLE site(SITE_NAME varchar(255),IP varchar(255))";
-		String sql2 = "CREATE TABLE resultat (SITE varchar(255),ID_TRAITEMENT int,DATE_INSERT date ,CHEMIN longtext)";
-		stmt.execute(sql);
-		stmt.execute(sql1);
-		stmt.execute(sql2);
-        System.out.println("Database created successfully...");
-     } catch (SQLException e) {
-        System.out.println("Failed to create database.") ;
-		
-     }	
-		
+			stmt = connection.createStatement();
+			String sql = "CREATE TABLE lien (LIEN1 varchar(255),LIEN2 varchar(255))";
+			String sql1 = "CREATE TABLE site(SITE_NAME varchar(255),IP varchar(255))";
+			String sql2 = "CREATE TABLE resultat (SITE varchar(255),ID_TRAITEMENT int,DATE_INSERT date ,CHEMIN longtext)";
+			stmt.execute(sql);
+			stmt.execute(sql1);
+			stmt.execute(sql2);
+			System.out.println("Database created successfully...");
+		} catch (SQLException e) {
+			System.out.println("Failed to create database.");
+
+		}
+
 	}
-	
-	static void create_table_orcl()
-	{
+
+	static void create_table_orcl() {
 		Statement stmt = null;
 		try {
-		stmt = connection.createStatement();
-		String sql = "CREATE TABLE lien (LIEN1 varchar(255),LIEN2 varchar(255))";
-		String sql1 = "CREATE TABLE site(SITE_NAME varchar(255),IP varchar(255))";
-		String sql2 = "CREATE TABLE resultat (SITE varchar(255),ID_TRAITEMENT int,DATE_INSERT date ,CHEMIN CLOB)";
-		stmt.execute(sql);
-		stmt.execute(sql1);
-		stmt.execute(sql2);
-        System.out.println("Database created successfully...");
-     } catch (SQLException e) {
-        System.out.println("Failed to create database.") ;
-		
-     }	
-		
+			stmt = connection.createStatement();
+			String sql = "CREATE TABLE lien (LIEN1 varchar(255),LIEN2 varchar(255))";
+			String sql1 = "CREATE TABLE site(SITE_NAME varchar(255),IP varchar(255))";
+			String sql2 = "CREATE TABLE resultat (SITE varchar(255),ID_TRAITEMENT int,DATE_INSERT date ,CHEMIN CLOB)";
+			stmt.execute(sql);
+			stmt.execute(sql1);
+			stmt.execute(sql2);
+			System.out.println("Database created successfully...");
+		} catch (SQLException e) {
+			System.out.println("Failed to create database.");
+
+		}
+
 	}
-	
-	static void drop_table()
-	{
+
+	static void drop_table() {
 		Statement stmt = null;
 		Statement stmt1 = null;
 		try {
-		stmt = connection.createStatement();
-		stmt1 = connection.createStatement();
-		stmt.addBatch("drop TABLE SITE ");
-		stmt.addBatch("drop TABLE LIEN ");
-		stmt.addBatch("drop TABLE RESULTAT ");
-		stmt.executeBatch();
-		//stmt1.executeBatch();
-        System.out.println("delete success");
-     } catch (SQLException e) {
-        System.out.println("Failed to delete") ;
-     }	
+			stmt = connection.createStatement();
+			stmt1 = connection.createStatement();
+			stmt.addBatch("drop TABLE SITE ");
+			stmt.addBatch("drop TABLE LIEN ");
+			stmt.addBatch("drop TABLE RESULTAT ");
+			stmt.executeBatch();
+			// stmt1.executeBatch();
+			System.out.println("delete success");
+		} catch (SQLException e) {
+			System.out.println("Failed to delete");
+		}
 	}
-	
+
 	static int orcl_exist() {
-		
+
 		int i = 0;
-	    try (Statement stmt = connection.createStatement();
-	         ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM user_tables WHERE table_name IN ('LIEN', 'SITE' , 'RESULTAT')")) {
+		try (Statement stmt = connection.createStatement();
+				ResultSet rs = stmt.executeQuery(
+						"SELECT COUNT(*) FROM user_tables WHERE table_name IN ('LIEN', 'SITE' , 'RESULTAT')")) {
 
-	        if (rs.next() && rs.getInt(1) == 3) {
-	           System.out.println("Les tables existent.");
-	            i=rs.getInt(1);
-	        } else {
-	        }
+			if (rs.next() && rs.getInt(1) == 3) {
+				System.out.println("Les tables existent.");
+				i = rs.getInt(1);
+			} else {
+			}
 
-	    } catch (SQLException e) {
-	        System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return i;
 	}
-	
-	static int mysql_exist(String db)
-	{
+
+	static int mysql_exist(String db) {
 		int i = 0;
-	    try (Statement stmt = connection.createStatement();
-	         ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '" + db + "' AND table_name IN ('LIEN', 'SITE' , 'RESULTAT')")) {
+		try (Statement stmt = connection.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '"
+						+ db + "' AND table_name IN ('LIEN', 'SITE' , 'RESULTAT')")) {
 
-	        if (rs.next() && rs.getInt(1) == 3) {
-	           
-	            i=rs.getInt(1);
-	        } else {
-	        }
+			if (rs.next() && rs.getInt(1) == 3) {
 
-	    } catch (SQLException e) {
-	        System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    
-	    return i;
+				i = rs.getInt(1);
+			} else {
+			}
+
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return i;
 	}
-	
-	
+
 }

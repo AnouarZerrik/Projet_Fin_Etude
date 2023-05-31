@@ -12,5 +12,4 @@ module PFE {
 	requires com.oracle.database.jdbc;
 	requires java.prefs;
 	requires java.xml;
-	
 }

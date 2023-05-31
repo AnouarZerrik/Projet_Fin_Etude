@@ -98,7 +98,7 @@ public class Menu_global {
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 
-		JMenu mnNewMenu = new JMenu("Data In");
+		JMenu mnNewMenu = new JMenu("Importer");
 		menuBar.add(mnNewMenu);
 
 		JMenu mnNewMenu_2 = new JMenu("Excel");
@@ -133,7 +133,7 @@ public class Menu_global {
 		});
 		mnNewMenu_6.add(mntmNewMenuItem_3);
 
-		JMenu mnNewMenu_1 = new JMenu("Data Out");
+		JMenu mnNewMenu_1 = new JMenu("Exporter ");
 		menuBar.add(mnNewMenu_1);
 
 		JMenuItem mntmExcel = new JMenuItem("Excel");
@@ -396,7 +396,7 @@ public class Menu_global {
 		});
 		mnNewMenu_3.add(mntmPourTous);
 
-		JMenu mnNewMenu_5 = new JMenu("Config");
+		JMenu mnNewMenu_5 = new JMenu("Configuration");
 		menuBar.add(mnNewMenu_5);
 
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Serveur");
@@ -415,7 +415,7 @@ public class Menu_global {
 		});
 		mnNewMenu_5.add(mntmNewMenuItem_1);
 
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Creer les tables");
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Créer les tables");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				connection con = new connection();
